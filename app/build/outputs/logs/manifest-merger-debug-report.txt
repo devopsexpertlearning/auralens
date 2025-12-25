@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:2:1-37:12
-INJECTED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:2:1-37:12
-INJECTED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:2:1-37:12
-INJECTED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:2:1-37:12
+ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:2:1-38:12
+INJECTED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:2:1-38:12
+INJECTED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:2:1-38:12
+INJECTED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:2:1-38:12
 MERGED from [com.google.ai.client.generativeai:generativeai:0.9.0] C:\Users\devopsexpert\.gradle\caches\transforms-3\59cbfe778f37c2abc4386f893499ef64\transformed\jetified-generativeai-0.9.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.camera:camera-video:1.3.1] C:\Users\devopsexpert\.gradle\caches\transforms-3\cd8b9a383166c3a89b3b2fa36db0abd8\transformed\jetified-camera-video-1.3.1\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.camera:camera-view:1.3.1] C:\Users\devopsexpert\.gradle\caches\transforms-3\8003da1f2ec415e2d28c21bbf4c60b8e\transformed\jetified-camera-view-1.3.1\AndroidManifest.xml:2:1-7:12
@@ -108,9 +108,13 @@ uses-permission#android.permission.RECORD_AUDIO
 ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:11:5-71
 	android:name
 		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:11:22-68
+uses-permission#android.permission.VIBRATE
+ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:12:5-66
+	android:name
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:12:22-63
 application
-ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:13:5-35:19
-INJECTED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:13:5-35:19
+ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:14:5-36:19
+INJECTED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:14:5-36:19
 MERGED from [androidx.camera:camera-camera2:1.3.1] C:\Users\devopsexpert\.gradle\caches\transforms-3\c18d4900eae5d9ee675cf61a2810d120\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:23:5-34:19
 MERGED from [androidx.camera:camera-camera2:1.3.1] C:\Users\devopsexpert\.gradle\caches\transforms-3\c18d4900eae5d9ee675cf61a2810d120\transformed\jetified-camera-camera2-1.3.1\AndroidManifest.xml:23:5-34:19
 MERGED from [androidx.camera:camera-core:1.3.1] C:\Users\devopsexpert\.gradle\caches\transforms-3\e88782416b5a3f2f6efdaefcf47fa431\transformed\jetified-camera-core-1.3.1\AndroidManifest.xml:23:5-34:19
@@ -136,45 +140,45 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\devopsexpert\.grad
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.12.0] C:\Users\devopsexpert\.gradle\caches\transforms-3\038b04d3e8587efc3e6c75d2e03f5c13\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:21:9-35
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:22:9-35
 	android:label
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:19:9-41
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:20:9-41
 	android:fullBackupContent
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:17:9-54
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:18:9-54
 	android:roundIcon
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:20:9-54
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:21:9-54
 	tools:targetApi
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:23:9-29
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:24:9-29
 	android:icon
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:18:9-43
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:19:9-43
 	android:allowBackup
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:15:9-35
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:16:9-35
 	android:theme
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:22:9-46
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:23:9-46
 	android:dataExtractionRules
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:16:9-65
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:17:9-65
 	android:name
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:14:9-36
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:15:9-36
 activity#com.example.auralens.MainActivity
-ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:24:9-34:20
+ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:25:9-35:20
 	android:label
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:27:13-45
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:28:13-45
 	android:exported
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:26:13-36
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:27:13-36
 	android:theme
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:28:13-50
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:29:13-50
 	android:name
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:25:13-41
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:26:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:29:13-33:29
+ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:30:13-34:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:30:17-69
+ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:31:17-69
 	android:name
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:30:25-66
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:31:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:32:17-77
+ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:33:17-77
 	android:name
-		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:32:27-74
+		ADDED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml:33:27-74
 uses-sdk
 INJECTED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\devopsexpert\Desktop\auralens\app\src\main\AndroidManifest.xml

@@ -57,9 +57,16 @@ class VisionViewModel(
         private set
     
     // Settings
-    var selectedModelName by mutableStateOf("gemini-3-pro-preview")
+    var selectedModelName by mutableStateOf("gemini-1.5-flash")
     var apiKey by mutableStateOf("")
     var isDetailedDescription by mutableStateOf(false)
+
+    // Dynamic Model Fetching
+    var availableModels = mutableStateListOf<String>()
+    var isFetchingModels by mutableStateOf(false)
+        private set
+    var fetchModelError by mutableStateOf<String?>(null)
+        private set
 
     init {
         // Load settings
@@ -71,12 +78,45 @@ class VisionViewModel(
             repository.setApiKey(apiKey)
         }
         repository.setModelName(selectedModelName)
+        
+        // Initial populate with some defaults in case fetch fails or hasn't run
+        if (availableModels.isEmpty()) {
+            availableModels.addAll(listOf("gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"))
+        }
+    }
+
+    fun fetchModels() {
+        if (apiKey.isBlank()) {
+            fetchModelError = "API Key required"
+            return
+        }
+        isFetchingModels = true
+        fetchModelError = null
+        viewModelScope.launch {
+            val result = repository.fetchModels()
+            if (result.isSuccess) {
+                availableModels.clear()
+                availableModels.addAll(result.getOrDefault(emptyList()))
+                // Verify selected model is in list, if not, pick first
+                if (selectedModelName !in availableModels && availableModels.isNotEmpty()) {
+                    onModelSelected(availableModels.first())
+                }
+            } else {
+                fetchModelError = "Failed to fetch models"
+            }
+            isFetchingModels = false
+        }
     }
 
     fun onApiKeyChanged(newKey: String) {
         apiKey = newKey
         preferenceManager.apiKey = newKey
         repository.setApiKey(newKey)
+        
+        // Auto-fetch models when API key is saved
+        if (newKey.isNotBlank()) {
+            fetchModels()
+        }
     }
 
     fun onModelSelected(name: String) {
@@ -180,13 +220,24 @@ class VisionViewModel(
             }
             val result = repository.findObject(image, targetObject)
             
-            // Check for success to trigger Haptics
+            // Check for success to trigger Haptics with proper JSON parsing
             if (result.isSuccess) {
                 val text = result.getOrDefault("")
-                if (text.contains("\"found\": true", ignoreCase = true) || text.contains("found", ignoreCase = true)) {
-                    hapticManager.vibrateSuccess()
-                } else {
-                     hapticManager.vibrateError()
+                try {
+                    val jsonObj = org.json.JSONObject(text)
+                    val found = jsonObj.optBoolean("found", false)
+                    if (found) {
+                        hapticManager.vibrateSuccess()
+                    } else {
+                        hapticManager.vibrateError()
+                    }
+                } catch (e: Exception) {
+                    // Fallback to string matching if JSON parsing fails
+                    if (text.contains("\"found\": true", ignoreCase = true)) {
+                        hapticManager.vibrateSuccess()
+                    } else {
+                        hapticManager.vibrateError()
+                    }
                 }
                 handleResult(result)
             } else {
@@ -215,16 +266,27 @@ class VisionViewModel(
     }
     
     private fun handleResult(result: Result<String>) {
-        if (result.isSuccess) {
-            val text = result.getOrDefault("No result")
-            _uiState.value = VisionUiState.Success(text)
-            addToHistory(text)
-            speak(text)
-        } else {
-            val error = result.exceptionOrNull()?.localizedMessage ?: "Unknown error"
-            _uiState.value = VisionUiState.Error(error)
+        try {
+            if (result.isSuccess) {
+                val text = result.getOrNull()
+                if (text.isNullOrBlank()) {
+                    _uiState.value = VisionUiState.Error("No result received")
+                    speak("I couldn't get a response. Please try again.")
+                    return
+                }
+                _uiState.value = VisionUiState.Success(text)
+                addToHistory(text)
+                speak(text)
+            } else {
+                val error = result.exceptionOrNull()?.localizedMessage ?: "Unknown error occurred"
+                _uiState.value = VisionUiState.Error(error)
+                hapticManager.vibrateError()
+                speak("Something went wrong. $error")
+            }
+        } catch (e: Exception) {
+            _uiState.value = VisionUiState.Error("Error processing result: ${e.localizedMessage}")
             hapticManager.vibrateError()
-            speak("Something went wrong. $error")
+            speak("An unexpected error occurred.")
         }
     }
     

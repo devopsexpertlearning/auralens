@@ -19,9 +19,8 @@ class GeminiClient(
         this.apiKey = newKey
     }
 
-    // Default to Gemini 3 Pro (assuming this is the target model name for the hackathon)
-    // In a real scenario, this would be a constant or fetched from config
-    private var currentModelName: String = "gemini-3-pro-preview" 
+    // Default to Gemini 1.5 Flash (fast and multimodal)
+    private var currentModelName: String = "gemini-1.5-flash" 
     
     // Configurable settings
     var useDetailedDescriptions: Boolean = false
@@ -60,6 +59,10 @@ class GeminiClient(
     }
 
     suspend fun describeScene(image: Bitmap): String = withContext(Dispatchers.IO) {
+        if (apiKey.isBlank()) {
+            return@withContext "API key is not set. Please configure it in settings."
+        }
+        
         val model = getModel()
         val prompt = if (useDetailedDescriptions) {
             "You are an assistive vision guide for a blind user. Describe the scene in front of the camera in specific detail. Mention objects, their colors, positions, and the general atmosphere. Avoid navigation claims."
@@ -76,12 +79,16 @@ class GeminiClient(
             )
             response.text ?: "I couldn't generate a description."
         } catch (e: Exception) {
-            "Error describing scene: ${e.localizedMessage}"
+            "Error describing scene: ${e.localizedMessage ?: e.message ?: "Unknown error"}"
         }
     }
 
     suspend fun readText(image: Bitmap): String = withContext(Dispatchers.IO) {
-        val model = getModel(modelName = "gemini-3-pro-preview") // Prefer high-intelligence model for text
+        if (apiKey.isBlank()) {
+            return@withContext "API key is not set. Please configure it in settings."
+        }
+        
+        val model = getModel(modelName = "gemini-1.5-pro") // Prefer high-intelligence model for text
         val prompt = "You are assisting a blind user with reading a document. First, identify the type of document and the key values (like total amount, due date, names). Then read the most important information clearly. Keep numbers and dates accurate. Avoid making up values."
         
         try {
@@ -93,7 +100,7 @@ class GeminiClient(
             )
             response.text ?: "I found no readable text."
         } catch (e: Exception) {
-            "Error reading text: ${e.localizedMessage}"
+            "Error reading text: ${e.localizedMessage ?: e.message ?: "Unknown error"}"
         }
     }
 
@@ -133,6 +140,10 @@ class GeminiClient(
     }
 
     suspend fun askAboutPhoto(image: Bitmap, question: String): String = withContext(Dispatchers.IO) {
+        if (apiKey.isBlank()) {
+            return@withContext "API key is not set. Please configure it in settings."
+        }
+        
         val model = getModel()
         val prompt = "You are assisting a blind user to understand a photo. The user asks: '$question'. Answer their question clearly and concisely based only on the image. If you are not sure, say you are not sure."
 
@@ -145,7 +156,39 @@ class GeminiClient(
             )
             response.text ?: "I couldn't answer that."
         } catch (e: Exception) {
-            "Error answering question: ${e.localizedMessage}"
+            "Error answering question: ${e.localizedMessage ?: e.message ?: "Unknown error"}"
+        }
+    }
+
+    suspend fun fetchAvailableModels(): List<String> = withContext(Dispatchers.IO) {
+        if (apiKey.isBlank()) return@withContext emptyList()
+
+        try {
+            val url = java.net.URL("https://generativelanguage.googleapis.com/v1beta/models?key=$apiKey")
+            val connection = url.openConnection() as java.net.HttpURLConnection
+            connection.requestMethod = "GET"
+
+            if (connection.responseCode == 200) {
+                val response = connection.inputStream.bufferedReader().use { it.readText() }
+                val jsonObject = org.json.JSONObject(response)
+                val modelsArray = jsonObject.getJSONArray("models")
+                val modelList = mutableListOf<String>()
+
+                for (i in 0 until modelsArray.length()) {
+                    val modelObj = modelsArray.getJSONObject(i)
+                    val name = modelObj.getString("name").removePrefix("models/")
+                    // Filter for Gemini models that support generation
+                    if (name.contains("gemini", ignoreCase = true) && !name.contains("embedding", ignoreCase = true)) {
+                        modelList.add(name)
+                    }
+                }
+                modelList
+            } else {
+                emptyList()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
         }
     }
 }

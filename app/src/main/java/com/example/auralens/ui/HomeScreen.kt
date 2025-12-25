@@ -388,9 +388,11 @@ fun HomeScreen(
                         }
                         val speechResult by viewModel.speechResult.collectAsState()
                         LaunchedEffect(speechResult) {
-                            speechResult?.let {
-                                inputText = it
-                                viewModel.stopListening()
+                            speechResult?.let { result ->
+                                if (result.isNotBlank()) {
+                                    inputText = result
+                                    viewModel.stopListening()
+                                }
                             }
                         }
                     }

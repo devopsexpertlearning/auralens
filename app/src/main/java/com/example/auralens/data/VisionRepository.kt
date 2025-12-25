@@ -59,4 +59,17 @@ class VisionRepository(
     fun setApiKey(key: String) {
         geminiClient.updateApiKey(key)
     }
+
+    suspend fun fetchModels(): Result<List<String>> {
+        return try {
+            val models = geminiClient.fetchAvailableModels()
+            if (models.isNotEmpty()) {
+                Result.success(models)
+            } else {
+                Result.failure(Exception("No models found or API error"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

@@ -1,7 +1,9 @@
 package com.example.auralens.ui
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
@@ -79,37 +81,68 @@ fun SettingsScreen(
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            // Custom Model Input
-            OutlinedTextField(
-                value = viewModel.selectedModelName,
-                onValueChange = { viewModel.onModelSelected(it) },
-                label = { Text("Model Name") },
+            // Custom Model Input with Fetch Button
+            Row(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                singleLine = true
-            )
-
-            Text("Presets:", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
-
-            // Simple Radio Buttons for Model Selection
-            val models = listOf("gemini-3-pro-preview", "gemini-2.0-flash-exp", "gemini-pro-vision")
-            models.forEach { modelName ->
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .selectable(
-                            selected = (modelName == viewModel.selectedModelName),
-                            onClick = { viewModel.onModelSelected(modelName) },
-                            role = Role.RadioButton
-                        )
-                        .padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                 OutlinedTextField(
+                    value = viewModel.selectedModelName,
+                    onValueChange = { viewModel.onModelSelected(it) },
+                    label = { Text("Model Name") },
+                    modifier = Modifier.weight(1f),
+                    singleLine = true
+                )
+                Spacer(Modifier.width(8.dp))
+                Button(
+                    onClick = { viewModel.fetchModels() },
+                    enabled = !viewModel.isFetchingModels && viewModel.apiKey.isNotBlank()
                 ) {
-                    RadioButton(
-                        selected = (modelName == viewModel.selectedModelName),
-                        onClick = null
-                    )
-                    Spacer(Modifier.width(8.dp))
-                    Text(text = modelName)
+                    if (viewModel.isFetchingModels) {
+                        CircularProgressIndicator(modifier = Modifier.size(16.dp), color = Color.White)
+                    } else {
+                        Text("Fetch")
+                    }
+                }
+            }
+            
+            if (viewModel.fetchModelError != null) {
+                Text(
+                    text = viewModel.fetchModelError!!,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
+
+            Text("Available Models:", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
+
+            // Dynamic Radio Buttons for Model Selection
+            // Use LazyColumn if list is long, but for a few items Column is fine. 
+            // Since we are in a scrollable column already (from parent? No, parent is just Column), 
+            // we should make this section scrollable if needed. The parent is using Column modifier fillMaxSize.
+            // Ideally we wrap the whole screen content in a scrollable column.
+            
+            Column(Modifier.verticalScroll(rememberScrollState())) {
+                viewModel.availableModels.forEach { modelName ->
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = (modelName == viewModel.selectedModelName),
+                                onClick = { viewModel.onModelSelected(modelName) },
+                                role = Role.RadioButton
+                            )
+                            .padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = (modelName == viewModel.selectedModelName),
+                            onClick = null
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Text(text = modelName)
+                    }
                 }
             }
         }
