@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,15 +60,35 @@ fun SettingsScreen(
                 )
             }
             
+            // API Key Input
+            OutlinedTextField(
+                value = viewModel.apiKey,
+                onValueChange = { viewModel.onApiKeyChanged(it) },
+                label = { Text("Gemini API Key") },
+                modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation(),
+                singleLine = true
+            )
+
             Divider()
-            
             Spacer(modifier = Modifier.height(16.dp))
-            
+
             Text(
                 text = "AI Model",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
+
+            // Custom Model Input
+            OutlinedTextField(
+                value = viewModel.selectedModelName,
+                onValueChange = { viewModel.onModelSelected(it) },
+                label = { Text("Model Name") },
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                singleLine = true
+            )
+
+            Text("Presets:", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
 
             // Simple Radio Buttons for Model Selection
             val models = listOf("gemini-3-pro-preview", "gemini-2.0-flash-exp", "gemini-pro-vision")
@@ -85,7 +106,7 @@ fun SettingsScreen(
                 ) {
                     RadioButton(
                         selected = (modelName == viewModel.selectedModelName),
-                        onClick = null // null recommended for accessibility with selectable
+                        onClick = null
                     )
                     Spacer(Modifier.width(8.dp))
                     Text(text = modelName)

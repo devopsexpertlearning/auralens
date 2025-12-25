@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.auralens.app-mergeDebugResources-58:/values-es/values-es.xml",
+            "outputFile": "com.example.auralens.app-mergeDebugResources-59:/values-es/values-es.xml",
             "map": [
                 {
                     "source": "C:\\Users\\devopsexpert\\.gradle\\caches\\transforms-3\\4327ef26a84e4be1cdb55aca1f984b69\\transformed\\jetified-foundation-release\\res\\values-es\\values-es.xml",

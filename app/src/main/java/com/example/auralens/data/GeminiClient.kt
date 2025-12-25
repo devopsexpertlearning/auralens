@@ -15,6 +15,9 @@ import kotlinx.coroutines.withContext
 class GeminiClient(
     private var apiKey: String
 ) {
+    fun updateApiKey(newKey: String) {
+        this.apiKey = newKey
+    }
 
     // Default to Gemini 3 Pro (assuming this is the target model name for the hackathon)
     // In a real scenario, this would be a constant or fetched from config

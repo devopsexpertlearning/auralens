@@ -55,4 +55,8 @@ class VisionRepository(
     fun setDetailedDescriptions(enabled: Boolean) {
         geminiClient.useDetailedDescriptions = enabled
     }
+
+    fun setApiKey(key: String) {
+        geminiClient.updateApiKey(key)
+    }
 }

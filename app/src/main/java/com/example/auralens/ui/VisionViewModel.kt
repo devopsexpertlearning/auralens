@@ -19,6 +19,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import com.example.auralens.util.PreferenceManager
 
 sealed class VisionUiState {
     object Idle : VisionUiState()
@@ -31,7 +32,8 @@ class VisionViewModel(
     private val repository: VisionRepository,
     private val ttsManager: TTSManager,
     private val speechManager: SpeechManager,
-    private val hapticManager: HapticManager
+    private val hapticManager: HapticManager,
+    private val preferenceManager: PreferenceManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<VisionUiState>(VisionUiState.Idle)
@@ -56,10 +58,30 @@ class VisionViewModel(
     
     // Settings
     var selectedModelName by mutableStateOf("gemini-3-pro-preview")
+    var apiKey by mutableStateOf("")
     var isDetailedDescription by mutableStateOf(false)
+
+    init {
+        // Load settings
+        apiKey = preferenceManager.apiKey
+        selectedModelName = preferenceManager.modelName
+
+        // Apply settings
+        if (apiKey.isNotBlank()) {
+            repository.setApiKey(apiKey)
+        }
+        repository.setModelName(selectedModelName)
+    }
+
+    fun onApiKeyChanged(newKey: String) {
+        apiKey = newKey
+        preferenceManager.apiKey = newKey
+        repository.setApiKey(newKey)
+    }
 
     fun onModelSelected(name: String) {
         selectedModelName = name
+        preferenceManager.modelName = name
         repository.setModelName(name)
     }
 
@@ -117,6 +139,13 @@ class VisionViewModel(
     fun describeScene(image: Bitmap) {
         _uiState.value = VisionUiState.Loading
         viewModelScope.launch {
+             // If key is empty, warn user
+            if (apiKey.isBlank()) {
+                _uiState.value = VisionUiState.Error("API Key missing. Go to Settings.")
+                speak("Please set your Gemini API key in settings.")
+                return@launch
+            }
+
             val result = repository.describeScene(image)
             handleResult(result)
         }
@@ -126,6 +155,11 @@ class VisionViewModel(
         _uiState.value = VisionUiState.Loading
         speak("Reading text...")
         viewModelScope.launch {
+            if (apiKey.isBlank()) {
+                 _uiState.value = VisionUiState.Error("API Key missing. Go to Settings.")
+                 speak("Please set your Gemini API key in settings.")
+                 return@launch
+            }
             val result = repository.readText(image)
             handleResult(result)
         }
@@ -139,6 +173,11 @@ class VisionViewModel(
         }
         _uiState.value = VisionUiState.Loading
         viewModelScope.launch {
+             if (apiKey.isBlank()) {
+                 _uiState.value = VisionUiState.Error("API Key missing. Go to Settings.")
+                 speak("Please set your Gemini API key in settings.")
+                 return@launch
+            }
             val result = repository.findObject(image, targetObject)
             
             // Check for success to trigger Haptics
@@ -165,6 +204,11 @@ class VisionViewModel(
         }
         _uiState.value = VisionUiState.Loading
         viewModelScope.launch {
+             if (apiKey.isBlank()) {
+                 _uiState.value = VisionUiState.Error("API Key missing. Go to Settings.")
+                 speak("Please set your Gemini API key in settings.")
+                 return@launch
+            }
             val result = repository.askAboutPhoto(image, userQuestion)
             handleResult(result)
         }

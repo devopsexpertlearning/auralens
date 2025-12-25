@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.auralens.app-mergeDebugResources-58:/values/values.xml",
+            "outputFile": "com.example.auralens.app-mergeDebugResources-59:/values/values.xml",
             "map": [
                 {
                     "source": "C:\\Users\\devopsexpert\\.gradle\\caches\\transforms-3\\1f322ce800c1c9b459cf03de662911b6\\transformed\\lifecycle-viewmodel-2.7.0\\res\\values\\values.xml",

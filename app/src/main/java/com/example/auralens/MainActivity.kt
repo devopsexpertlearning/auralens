@@ -23,20 +23,20 @@ import com.example.auralens.util.HapticManager
 import com.example.auralens.util.SpeechManager
 import com.example.auralens.util.TTSManager
 
-class MainActivity : ComponentActivity() {
+import com.example.auralens.util.PreferenceManager
 
-    // TODO: INSERT YOUR GEMINI API KEY HERE
-    private val GEMINI_API_KEY = "AIzaSyB5Nk5_HArZ4iX9oyKia7DhkDyJ5N0r6ek"
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Manual Dependency Injection
-        val geminiClient = GeminiClient(GEMINI_API_KEY)
+        val geminiClient = GeminiClient("") // API Key loaded from prefs in ViewModel
         val repository = VisionRepository(geminiClient)
         val cameraManager = CameraManager(this)
         val ttsManager = TTSManager(this)
         val speechManager = SpeechManager(this)
+        val preferenceManager = PreferenceManager(this)
 
         val hapticManager = HapticManager(this)
 
@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 if (modelClass.isAssignableFrom(VisionViewModel::class.java)) {
                     @Suppress("UNCHECKED_CAST")
-                    return VisionViewModel(repository, ttsManager, speechManager, hapticManager) as T
+                    return VisionViewModel(repository, ttsManager, speechManager, hapticManager, preferenceManager) as T
                 }
                 throw IllegalArgumentException("Unknown ViewModel class")
             }
