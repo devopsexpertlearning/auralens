@@ -1,0 +1,17 @@
+R_DEF: Internal format may change without notice
+local
+color ic_launcher_background
+drawable ic_launcher_foreground
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+string ask_about_photo
+string explore_scene
+string find_object
+string permission_audio_rationale
+string permission_camera_rationale
+string read_text
+string settings
+style Theme.AuraLens
+xml backup_rules
+xml data_extraction_rules

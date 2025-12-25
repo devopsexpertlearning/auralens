@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">AuraLens</string>
+    <string name="explore_scene">Explore Scene</string>
+    <string name="read_text">Read Text</string>
+    <string name="find_object">Find Object</string>
+    <string name="ask_about_photo">Ask About Photo</string>
+    <string name="settings">Settings</string>
+    <string name="permission_camera_rationale">Camera permission is required to see the world.</string>
+    <string name="permission_audio_rationale">Audio permission is required for voice commands.</string>
+</resources>
